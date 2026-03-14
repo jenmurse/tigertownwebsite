@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vegan Ice Cream | Tiger Town</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="paint-canvas"></canvas>
+  <div id="cursor"></div>
+
+  <main class="page">
+    <nav class="nav">
+      <a href="index.html" class="logo">
+        <img src="" alt="Tiger Town">
+      </a>
+    </nav>
+
+    <div class="project-header">
+      <div class="project-category">NON-TECHNICAL</div>
+      <h1 class="project-title">Vegan Ice Cream</h1>
+      <p class="project-intro">Jen's love of ice cream and her body's hatred for dairy have led to her making her own (mostly) vegan ice cream. She was inspired by the small Seattle chain, Frankie & Jo's, whose entire selection of ice cream is plant-based. She loves experimenting with flavor combinations and baking her own mix-ins.</p>
+      <p class="project-additional-details">Addtional details:</p>
+      <p class="project-details">Jen uses a Cuisinart ICE-100 to churn her ice cream. She makes her own cashew milk with a 1:1 cashew to water ratio yielding ~15% "milk" fat.</p>
+    </div>
+
+    <div class="project-hero">
+      <div class="hero-single" data-index="0">
+        <img src="images/ice-cream/sweet+potato+cookie.JPG" alt="Vegan Ice Cream">
+      </div>
+    </div>
+
+    <div class="photo-grid loading" id="photo-grid">
+      <img class="grid-img" src="images/ice-cream/berry+cheesecake.jpg" data-index="1" alt="" loading="lazy">
+      <img class="grid-img" src="images/ice-cream/ACS_0051.JPG" data-index="2" alt="" loading="lazy">
+      <img class="grid-img" src="images/ice-cream/ACS_0058.jpg" data-index="3" alt="" loading="lazy">
+      <img class="grid-img" src="images/ice-cream/blackberry-cheesecake-overhead.JPG" data-index="4" alt="" loading="lazy">
+      <img class="grid-img" src="images/ice-cream/passionfruit-cheesecake-overhead.jpg" data-index="5" alt="" loading="lazy">
+      <img class="grid-img" src="images/ice-cream/mango+basil.jpg" data-index="6" alt="" loading="lazy">
+      <img class="grid-img" src="images/ice-cream/blackberry+lime.jpg" data-index="7" alt="" loading="lazy">
+      <img class="grid-img" src="images/ice-cream/IMG_8756.jpg" data-index="8" alt="" loading="lazy">
+      <img class="grid-img" src="images/ice-cream/ACS_0099.JPG" data-index="9" alt="" loading="lazy">
+      <img class="grid-img" src="images/ice-cream/IMG_9481.JPG" data-index="10" alt="" loading="lazy">
+      <img class="grid-img" src="images/ice-cream/IMG_9668.jpg" data-index="11" alt="" loading="lazy">
+      <img class="grid-img" src="images/ice-cream/ACS_0042+2.JPG" data-index="12" alt="" loading="lazy">
+    </div>
+
+    <div class="bottom-nav"></div>
+
+    </main>
+
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      
+      // ── SCROLL REVEAL ──
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const row = entry.target.parentElement;
+            const siblings = row ? Array.from(row.children) : [entry.target];
+            const idx = siblings.indexOf(entry.target);
+            setTimeout(() => entry.target.classList.add('revealed'), idx * 60);
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.hero-single, .hero-duo-item').forEach(el => {
+        el.classList.add('revealed');
+      });
+
+      function observeGridItems() {
+        document.querySelectorAll('.grid-item').forEach(el => revealObserver.observe(el));
+      }
+
+      // ── JUSTIFIED GRID ──
+      const ROW_HEIGHT = 280;
+      const GAP = 14;
+      const grid = document.getElementById('photo-grid');
+      const rawImgs = Array.from(grid.querySelectorAll('.grid-img'));
+
+      function containerWidth() { return grid.getBoundingClientRect().width; }
+
+      function buildGrid(images) {
+        const W = containerWidth();
+        grid.innerHTML = '';
+        grid.classList.remove('loading');
+        const ratios = images.map(img => img.naturalWidth / img.naturalHeight || 1.5);
+        let i = 0;
+        while (i < images.length) {
+          let best = 1;
+          for (let j = 1; j <= images.length - i; j++) {
+            const slice = ratios.slice(i, i + j);
+            const sumR = slice.reduce((a, b) => a + b, 0);
+            const scale = (W - (j - 1) * GAP) / (sumR * ROW_HEIGHT);
+            const rowH = ROW_HEIGHT * scale;
+            best = j;
+            if (rowH < ROW_HEIGHT * 0.72) { best = j - 1; break; }
+          }
+          if (best < 1) best = 1;
+          const slice = ratios.slice(i, i + best);
+          const sliceImgs = images.slice(i, i + best);
+          const sumR = slice.reduce((a, b) => a + b, 0);
+          const gaps = (best - 1) * GAP;
+          const isLast = (i + best >= images.length);
+          const rowH = isLast ? ROW_HEIGHT : (W - gaps) / sumR;
+          const row = document.createElement('div');
+          row.className = 'grid-row';
+          sliceImgs.forEach((img, k) => {
+            const itemW = isLast ? (ratios[i + k] * ROW_HEIGHT) : (ratios[i + k] * rowH);
+            const item = document.createElement('div');
+            item.className = 'grid-item';
+            item.style.width = itemW + 'px';
+            item.style.height = (isLast ? ROW_HEIGHT : rowH) + 'px';
+            item.dataset.index = img.dataset.index;
+            const imgEl = document.createElement('img');
+            imgEl.src = img.src;
+            imgEl.alt = '';
+            item.appendChild(imgEl);
+            item.addEventListener('click', () => openModal(parseInt(item.dataset.index)));
+            row.appendChild(item);
+          });
+          grid.appendChild(row);
+          i += best;
+        }
+        requestAnimationFrame(() => observeGridItems());
+      }
+
+      let loaded = 0;
+      rawImgs.forEach(img => {
+        const done = () => { loaded++; if (loaded === rawImgs.length) buildGrid(rawImgs); };
+        if (img.complete) done(); else { img.addEventListener('load', done); img.addEventListener('error', done); }
+      });
+
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => buildGrid(rawImgs), 120);
+      });
+
+      // ── MODAL ──
+      const allCaptions = ['Sweet potato cookie crunch', 'Berry cheesecake', 'Peanut butter brownie honeycomb', 'Cherry marzipan mochi brownie', 'Blackberry cheesecake', 'Passionfruit cheesecake', 'Mango basil', 'Blackberry lime', 'Cookie dough', 'Wild berry lavender', 'Carrot cake', 'Coffee chip + cookie dough', 'Mint chip'];
+      const allImgs = ['images/ice-cream/sweet+potato+cookie.JPG', 'images/ice-cream/berry+cheesecake.jpg', 'images/ice-cream/ACS_0051.JPG', 'images/ice-cream/ACS_0058.jpg', 'images/ice-cream/blackberry-cheesecake-overhead.JPG', 'images/ice-cream/passionfruit-cheesecake-overhead.jpg', 'images/ice-cream/mango+basil.jpg', 'images/ice-cream/blackberry+lime.jpg', 'images/ice-cream/IMG_8756.jpg', 'images/ice-cream/ACS_0099.JPG', 'images/ice-cream/IMG_9481.JPG', 'images/ice-cream/IMG_9668.jpg', 'images/ice-cream/ACS_0042+2.JPG'];
+      const modal = document.getElementById('modal');
+      const modalImg = document.getElementById('modal-img');
+      const modalPrev = document.getElementById('modal-prev');
+      const modalNext = document.getElementById('modal-next');
+      let current = 0;
+
+      function openModal(idx) {
+        current = idx; modal.classList.add('open'); document.body.style.overflow = 'hidden'; updateModal();
+      }
+      function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
+      function updateModal() {
+        modalImg.src = allImgs[current];
+        const cap = allCaptions[current];
+        let capEl = document.getElementById('modal-caption');
+        if (!capEl) {
+          capEl = document.createElement('div');
+          capEl.id = 'modal-caption';
+          capEl.className = 'modal-caption';
+          document.querySelector('.modal-img-wrap').appendChild(capEl);
+        }
+        capEl.textContent = cap || '';
+        modalPrev.classList.toggle('hidden', current === 0);
+        modalNext.classList.toggle('hidden', current === allImgs.length - 1);
+      }
+      function prev() { if (current > 0) { current--; updateModal(); } }
+      function next() { if (current < allImgs.length - 1) { current++; updateModal(); } }
+
+      document.querySelector('.hero-single').addEventListener('click', () => openModal(0));
+      document.getElementById('modal-close').addEventListener('click', closeModal);
+      modalPrev.addEventListener('click', prev);
+      modalNext.addEventListener('click', next);
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+      document.addEventListener('keydown', (e) => {
+        if (!modal.classList.contains('open')) return;
+        if (e.key === 'ArrowLeft') prev();
+        if (e.key === 'ArrowRight') next();
+        if (e.key === 'Escape') closeModal();
+      });
+      let touchStartX = 0;
+      modal.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, {passive: true});
+      modal.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); }
+      });
+
+    });
+  </script>
+
+</html>

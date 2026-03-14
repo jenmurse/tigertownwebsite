@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bear Car | Tiger Town</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="paint-canvas"></canvas>
+  <div id="cursor"></div>
+
+  <main class="page">
+    <nav class="nav">
+      <a href="index.html" class="logo">
+        <img src="" alt="Tiger Town">
+      </a>
+    </nav>
+
+    <div class="project-header">
+      <div class="project-category">TECHNICAL</div>
+      <h1 class="project-title">Bear Car</h1>
+      <p class="project-intro">Jen had always wanted an art car for Burning Man however she never wanted something that was going to be impossible to transport. Garth designed a car that would easily break down into manageable parts and designed it in Jen's favorite bear character, Rilakkuma.</p>
+      <p class="project-additional-details">Addtional details:</p>
+      <p class="project-details">The car is made from two bicycles joined by parts that Garth fabricated to hold them together. In particular, he linked the front wheels via ball joints which implemented Ackermann steering geometry to drive the car. It is powered by two 350-watt motors. The outer shell is made of PVC pipe and sewn, stretched fabric.</p>
+    </div>
+
+    <div class="project-hero">
+      <div class="hero-single" data-index="0">
+        <img src="images/bear-car/IMG_7506.JPG" alt="Bear Car">
+      </div>
+    </div>
+
+    <!-- images loaded hidden, JS builds rows after natural sizes known -->
+    <div class="photo-grid loading" id="photo-grid">
+        <img class="grid-img" src="images/bear-car/rainbowbear.gif" data-index="1" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5179.jpg" data-index="2" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5200.jpg" data-index="3" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5202.jpg" data-index="4" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5434.jpg" data-index="5" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5438.jpg" data-index="6" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5469.jpg" data-index="7" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5470.jpg" data-index="8" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5472.jpg" data-index="9" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5543.gif" data-index="10" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5482.jpg" data-index="11" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5566.gif" data-index="12" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5598.jpg" data-index="13" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5602.jpg" data-index="14" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5604.jpg" data-index="15" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_0073.jpg" data-index="16" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_0074.jpg" data-index="17" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5668.jpg" data-index="18" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5669.jpg" data-index="19" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5678.jpg" data-index="20" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5680.jpg" data-index="21" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5681.jpg" data-index="22" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5684.jpg" data-index="23" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5683.jpg" data-index="24" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_6406.jpg" data-index="25" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5700.jpg" data-index="26" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5699.jpg" data-index="27" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5722.jpg" data-index="28" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5706.jpg" data-index="29" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5725.jpg" data-index="30" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5707.jpg" data-index="31" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5709.jpg" data-index="32" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5723.jpg" data-index="33" alt="" loading="lazy">
+        <img class="grid-img" src="images/bear-car/IMG_5724.jpg" data-index="34" alt="" loading="lazy">
+    </div>
+
+    <div class="bottom-nav"></div>
+
+    </main>
+
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // ── PAINT + CURSOR ──
+      const cursor = document.getElementById('cursor');
+      const canvas = document.getElementById('paint-canvas');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        function resize() { canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+        resize(); window.addEventListener('resize', resize);
+        const strokes=[], ACCENT=[174,255,208];
+        let lx=null, ly=null;
+        document.addEventListener('mousemove',(e)=>{
+          const x=e.clientX, y=e.clientY;
+          cursor.style.left=x+'px'; cursor.style.top=y+'px';
+          if(lx!==null){
+            const d=Math.hypot(x-lx,y-ly), s=Math.max(1,Math.floor(d/6));
+            for(let i=0;i<=s;i++){const t=i/s; strokes.push({x:lx+(x-lx)*t,y:ly+(y-ly)*t,r:26*(0.6+Math.random()*0.4),life:90,maxLife:90});}
+          }
+          lx=x; ly=y;
+        });
+        document.addEventListener('mouseleave',()=>{lx=null;ly=null;});
+        function draw(){
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+          for(let i=strokes.length-1;i>=0;i--){
+            const s=strokes[i]; s.life--;
+            if(s.life<=0){strokes.splice(i,1);continue;}
+            ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+            ctx.fillStyle=`rgba(${ACCENT[0]},${ACCENT[1]},${ACCENT[2]},${(s.life/s.maxLife)*0.18})`;
+            ctx.fill();
+          }
+          requestAnimationFrame(draw);
+        }
+        draw();
+      }
+
+      // ── SCROLL REVEAL ──
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // stagger siblings in the same row slightly
+            const row = entry.target.parentElement;
+            const siblings = row ? Array.from(row.children) : [entry.target];
+            const idx = siblings.indexOf(entry.target);
+            setTimeout(() => {
+              entry.target.classList.add('revealed');
+            }, idx * 60);
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.08,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      // observe hero immediately
+      document.querySelectorAll('.hero-single, .hero-duo-item').forEach(el => {
+        el.classList.add('revealed'); // hero always visible on load
+      });
+
+      // grid items observed after JS builds rows
+      function observeGridItems() {
+        document.querySelectorAll('.grid-item').forEach(el => {
+          revealObserver.observe(el);
+        });
+      }
+
+      // ── JUSTIFIED GRID LAYOUT ──
+      const ROW_HEIGHT = 280;  // target row height px
+      const GAP = 14;
+      const grid = document.getElementById('photo-grid');
+      const rawImgs = Array.from(grid.querySelectorAll('.grid-img'));
+
+      // get container width (the .page max-width minus padding)
+      function containerWidth() {
+        return grid.getBoundingClientRect().width;
+      }
+
+      function buildGrid(images) {
+        const W = containerWidth();
+        grid.innerHTML = '';
+        grid.classList.remove('loading');
+        // observe after next paint so items are in DOM
+        requestAnimationFrame(() => observeGridItems());
+
+        // compute natural aspect ratios
+        const ratios = images.map(img => img.naturalWidth / img.naturalHeight || 1.5);
+
+        // greedy row packing
+        let i = 0;
+        while (i < images.length) {
+          // figure out how many images fit in this row
+          // try j images: total width at ROW_HEIGHT = sum(ratio * ROW_HEIGHT)
+          // with gaps = (j-1)*GAP
+          // scale so total = W: scale = (W - (j-1)*GAP) / sum(ratio * ROW_HEIGHT)
+          // final height = ROW_HEIGHT * scale
+          // we want height between ROW_HEIGHT*0.7 and ROW_HEIGHT*1.2
+
+          let j = 1;
+          let best = 1;
+          for (j = 1; j <= images.length - i; j++) {
+            const slice = ratios.slice(i, i + j);
+            const sumRatios = slice.reduce((a, b) => a + b, 0);
+            const totalNaturalW = sumRatios * ROW_HEIGHT;
+            const gaps = (j - 1) * GAP;
+            const scale = (W - gaps) / totalNaturalW;
+            const rowH = ROW_HEIGHT * scale;
+            best = j;
+            // if adding one more would make row too short, stop
+            if (rowH < ROW_HEIGHT * 0.72) { best = j - 1; break; }
+          }
+          if (best < 1) best = 1;
+
+          const slice = ratios.slice(i, i + best);
+          const sliceImgs = images.slice(i, i + best);
+          const sumRatios = slice.reduce((a, b) => a + b, 0);
+          const gaps = (best - 1) * GAP;
+          // for last row: don't upscale beyond natural — just use ROW_HEIGHT
+          const isLastRow = (i + best >= images.length);
+          let rowH;
+          if (isLastRow) {
+            rowH = ROW_HEIGHT;
+          } else {
+            rowH = (W - gaps) / sumRatios / 1; // scale to fill width
+            // recompute: each img width = ratio * rowH
+            // sum(ratio*rowH) + gaps = W  →  rowH = (W-gaps)/sumRatios
+            rowH = (W - gaps) / sumRatios;
+          }
+
+          // build row
+          const row = document.createElement('div');
+          row.className = 'grid-row';
+
+          sliceImgs.forEach((img, k) => {
+            const itemW = isLastRow ? (ratios[i+k] * ROW_HEIGHT) : (ratios[i+k] * rowH);
+            const item = document.createElement('div');
+            item.className = 'grid-item';
+            item.style.width = itemW + 'px';
+            item.style.height = (isLastRow ? ROW_HEIGHT : rowH) + 'px';
+            item.dataset.index = img.dataset.index;
+            const imgEl = document.createElement('img');
+            imgEl.src = img.src;
+            imgEl.alt = '';
+            item.appendChild(imgEl);
+            item.addEventListener('click', () => openModal(parseInt(item.dataset.index)));
+            row.appendChild(item);
+          });
+
+          grid.appendChild(row);
+          i += best;
+        }
+      }
+
+      // wait for all images to load so we have naturalWidth/Height
+      let loaded = 0;
+      rawImgs.forEach(img => {
+        if (img.complete) {
+          loaded++;
+          if (loaded === rawImgs.length) buildGrid(rawImgs);
+        } else {
+          img.addEventListener('load', () => {
+            loaded++;
+            if (loaded === rawImgs.length) buildGrid(rawImgs);
+          });
+          img.addEventListener('error', () => {
+            loaded++;
+            if (loaded === rawImgs.length) buildGrid(rawImgs);
+          });
+        }
+      });
+
+      // rebuild on resize
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => buildGrid(rawImgs), 120);
+      });
+
+      // ── MODAL ──
+      const allCaptions = [];
+      const allImgs = ['images/bear-car/IMG_7506.JPG', 'images/bear-car/rainbowbear.gif', 'images/bear-car/IMG_5179.jpg', 'images/bear-car/IMG_5200.jpg', 'images/bear-car/IMG_5202.jpg', 'images/bear-car/IMG_5434.jpg', 'images/bear-car/IMG_5438.jpg', 'images/bear-car/IMG_5469.jpg', 'images/bear-car/IMG_5470.jpg', 'images/bear-car/IMG_5472.jpg', 'images/bear-car/IMG_5543.gif', 'images/bear-car/IMG_5482.jpg', 'images/bear-car/IMG_5566.gif', 'images/bear-car/IMG_5598.jpg', 'images/bear-car/IMG_5602.jpg', 'images/bear-car/IMG_5604.jpg', 'images/bear-car/IMG_0073.jpg', 'images/bear-car/IMG_0074.jpg', 'images/bear-car/IMG_5668.jpg', 'images/bear-car/IMG_5669.jpg', 'images/bear-car/IMG_5678.jpg', 'images/bear-car/IMG_5680.jpg', 'images/bear-car/IMG_5681.jpg', 'images/bear-car/IMG_5684.jpg', 'images/bear-car/IMG_5683.jpg', 'images/bear-car/IMG_6406.jpg', 'images/bear-car/IMG_5700.jpg', 'images/bear-car/IMG_5699.jpg', 'images/bear-car/IMG_5722.jpg', 'images/bear-car/IMG_5706.jpg', 'images/bear-car/IMG_5725.jpg', 'images/bear-car/IMG_5707.jpg', 'images/bear-car/IMG_5709.jpg', 'images/bear-car/IMG_5723.jpg', 'images/bear-car/IMG_5724.jpg'];
+      const modal = document.getElementById('modal');
+      const modalImg = document.getElementById('modal-img');
+      const modalPrev = document.getElementById('modal-prev');
+      const modalNext = document.getElementById('modal-next');
+      let current = 0;
+
+      function openModal(idx) {
+        current = idx;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        updateModal();
+      }
+      function closeModal() {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      function updateModal() {
+        modalImg.src = allImgs[current];
+        modalCounter.textContent = (current+1) + ' / ' + allImgs.length;
+        modalPrev.classList.toggle('hidden', current === 0);
+        modalNext.classList.toggle('hidden', current === allImgs.length - 1);
+        const cap = allCaptions[current];
+        let capEl = document.getElementById('modal-caption');
+        if (!capEl) {
+          capEl = document.createElement('div');
+          capEl.id = 'modal-caption';
+          capEl.className = 'modal-caption';
+          document.querySelector('.modal-img-wrap').appendChild(capEl);
+        }
+        capEl.textContent = cap || '';
+      }
+      function prev() { if(current>0){current--;updateModal();} }
+      function next() { if(current<allImgs.length-1){current++;updateModal();} }
+
+      document.querySelector('.hero-single').addEventListener('click', () => openModal(0));
+      document.getElementById('modal-close').addEventListener('click', closeModal);
+      modalPrev.addEventListener('click', prev);
+      modalNext.addEventListener('click', next);
+      modal.addEventListener('click', (e) => { if(e.target===modal) closeModal(); });
+      document.addEventListener('keydown', (e) => {
+        if(!modal.classList.contains('open')) return;
+        if(e.key==='ArrowLeft') prev();
+        if(e.key==='ArrowRight') next();
+        if(e.key==='Escape') closeModal();
+      });
+      let touchStartX=0;
+      modal.addEventListener('touchstart',(e)=>{touchStartX=e.touches[0].clientX;},{passive:true});
+      modal.addEventListener('touchend',(e)=>{
+        const dx=e.changedTouches[0].clientX-touchStartX;
+        if(Math.abs(dx)>40){dx<0?next():prev();}
+      });
+
+    });
+  </script>
+
+</html>
