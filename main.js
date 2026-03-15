@@ -72,7 +72,7 @@ document.head.appendChild(link);
 
 // ── LOGO ──
 // Fetches SVG and inlines it so JS can manipulate the pupils for eye tracking.
-const MAX_TRAVEL_RIGHT = 4;
+const MAX_TRAVEL_RIGHT = 3;
 const MAX_TRAVEL_LEFT  = 5;
 
 function initEyeTracking(svgEl) {
