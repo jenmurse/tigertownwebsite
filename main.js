@@ -94,6 +94,11 @@ const PROJECTS = {
     { label: 'Vegan Ice Cream',       href: 'vegan-ice-cream.html' },
     { label: 'Wedding Save the Date', href: 'wedding-save-the-date.html' },
   ],
+  findUs: [
+    { label: 'About Us',  href: 'about.html' },
+    { label: 'Jen',       href: 'https://jenmurse.com',  external: true },
+    { label: 'Garth',     href: 'https://garth.app',     external: true },
+  ],
 };
 
 // ── BOTTOM NAV (interior pages) ──
@@ -104,7 +109,8 @@ if (navEl) {
     const lis = items.map(p => {
       const isCurrent = p.href === currentFile;
       const wip = p.wip ? ' <span class="wip-tag">WIP</span>' : '';
-      return `<li><a href="${p.href}"${isCurrent ? ' class="current"' : ''}>${p.label}</a>${wip}</li>`;
+      const external = p.external ? ' target="_blank" rel="noopener"' : '';
+      return `<li><a href="${p.href}"${external}${isCurrent ? ' class="current"' : ''}>${p.label}</a>${wip}</li>`;
     }).join('\n          ');
     return `<div>
         <div class="bottom-nav-label">${label}</div>
@@ -115,7 +121,8 @@ if (navEl) {
   }
   navEl.innerHTML =
     renderNavCol('Technical', PROJECTS.technical) +
-    renderNavCol('Non-technical', PROJECTS.nonTechnical);
+    renderNavCol('Non-technical', PROJECTS.nonTechnical) +
+    renderNavCol('Find Us', PROJECTS.findUs);
 }
 
 // ── HOMEPAGE LINK GRID ──
@@ -124,7 +131,8 @@ if (gridEl) {
   function renderGridSection(label, items, delay) {
     const lis = items.map(p => {
       const wip = p.wip ? `\n            <span class="wip-tag">WIP</span>` : '';
-      return `<li><a href="${p.href}">${p.label}</a>${wip}</li>`;
+      const external = p.external ? ' target="_blank" rel="noopener"' : '';
+      return `<li><a href="${p.href}"${external}>${p.label}</a>${wip}</li>`;
     }).join('\n          ');
     return `<div class="link-section" style="animation-delay:${delay}">
         <div class="section-label">${label}</div>
@@ -135,7 +143,8 @@ if (gridEl) {
   }
   gridEl.innerHTML =
     renderGridSection('Technical',     PROJECTS.technical,    '0.28s') +
-    renderGridSection('Non-technical', PROJECTS.nonTechnical, '0.33s');
+    renderGridSection('Non-technical', PROJECTS.nonTechnical, '0.33s') +
+    renderGridSection('Find Us',       PROJECTS.findUs,       '0.38s');
 }
 
 // ── MODAL SHELL ──
