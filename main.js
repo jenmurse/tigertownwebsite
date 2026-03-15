@@ -71,11 +71,51 @@ link.href = 'favicon.svg';
 document.head.appendChild(link);
 
 // ── LOGO ──
-// To change logo file: update the src value below.
-document.querySelectorAll('.logo img, .nav .logo img').forEach(img => {
-  img.src = 'tiger-town-mark-animated.svg';
-  img.alt = 'Tiger Town';
-});
+// Fetches SVG and inlines it so JS can manipulate the pupils for eye tracking.
+const MAX_TRAVEL = 5;
+
+function initEyeTracking(svgEl) {
+  const svgW = 103.27;
+  const svgH = 101.08;
+
+  document.addEventListener('mousemove', (e) => {
+    const rect = svgEl.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const scaleX = svgW / rect.width;
+    const scaleY = svgH / rect.height;
+    const dx = (e.clientX - cx) * scaleX;
+    const dy = (e.clientY - cy) * scaleY;
+    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    const clamp = Math.min(dist, MAX_TRAVEL * 10) / (MAX_TRAVEL * 10);
+    const tx = (dx / dist) * clamp * MAX_TRAVEL;
+    const ty = 0;
+
+    svgEl.querySelectorAll('#pupil-left, #pupil-right').forEach(p => {
+      p.setAttribute('transform', `translate(${tx}, ${ty})`);
+    });
+  });
+}
+
+fetch('tiger-town-animated-mark.svg')
+  .then(r => r.text())
+  .then(svgText => {
+    document.querySelectorAll('.logo, .nav .logo').forEach(container => {
+      // Remove existing img if present
+      const existing = container.querySelector('img');
+      if (existing) existing.remove();
+
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = svgText;
+      const svgEl = wrapper.firstElementChild;
+      svgEl.style.height = '56px';
+      svgEl.style.width = 'auto';
+      svgEl.style.display = 'block';
+      container.appendChild(svgEl);
+
+      initEyeTracking(svgEl);
+    });
+  });
 
 // ── PROJECTS ──
 // Single source of truth for all project links.
