@@ -79,7 +79,7 @@ function initEyeTracking(svgEl) {
   const svgW = 103.27;
   let targetTx = 0;
   let currentTx = 0;
-  const LERP = 0.08; // lower = smoother/slower, higher = snappier
+  const LERP = 0.04; // lower = smoother/slower such as 0.04, higher = snappier such as 0.15
 
   document.addEventListener('mousemove', (e) => {
     const rect = svgEl.getBoundingClientRect();
