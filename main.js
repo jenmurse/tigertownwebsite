@@ -77,7 +77,9 @@ const MAX_TRAVEL_LEFT  = 5;
 
 function initEyeTracking(svgEl) {
   const svgW = 103.27;
-  const svgH = 101.08;
+  let targetTx = 0;
+  let currentTx = 0;
+  const LERP = 0.08; // lower = smoother/slower, higher = snappier
 
   document.addEventListener('mousemove', (e) => {
     const rect = svgEl.getBoundingClientRect();
@@ -87,12 +89,16 @@ function initEyeTracking(svgEl) {
     const dist = Math.abs(dx) || 1;
     const maxTravel = dx > 0 ? MAX_TRAVEL_RIGHT : MAX_TRAVEL_LEFT;
     const clamp = Math.min(dist, maxTravel * 10) / (maxTravel * 10);
-    const tx = (dx / dist) * clamp * maxTravel;
-
-    svgEl.querySelectorAll('#pupil-left, #pupil-right').forEach(p => {
-      p.setAttribute('transform', `translate(${tx}, 0)`);
-    });
+    targetTx = (dx / dist) * clamp * maxTravel;
   });
+
+  (function animate() {
+    currentTx += (targetTx - currentTx) * LERP;
+    svgEl.querySelectorAll('#pupil-left, #pupil-right').forEach(p => {
+      p.setAttribute('transform', `translate(${currentTx}, 0)`);
+    });
+    requestAnimationFrame(animate);
+  })();
 }
 
 fetch('tiger-town-animated-mark.svg')
