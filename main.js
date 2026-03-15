@@ -72,7 +72,8 @@ document.head.appendChild(link);
 
 // ── LOGO ──
 // Fetches SVG and inlines it so JS can manipulate the pupils for eye tracking.
-const MAX_TRAVEL = 4;
+const MAX_TRAVEL_RIGHT = 4;
+const MAX_TRAVEL_LEFT  = 5;
 
 function initEyeTracking(svgEl) {
   const svgW = 103.27;
@@ -81,18 +82,15 @@ function initEyeTracking(svgEl) {
   document.addEventListener('mousemove', (e) => {
     const rect = svgEl.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
     const scaleX = svgW / rect.width;
-    const scaleY = svgH / rect.height;
     const dx = (e.clientX - cx) * scaleX;
-    const dy = (e.clientY - cy) * scaleY;
-    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-    const clamp = Math.min(dist, MAX_TRAVEL * 10) / (MAX_TRAVEL * 10);
-    const tx = (dx / dist) * clamp * MAX_TRAVEL;
-    const ty = 0;
+    const dist = Math.abs(dx) || 1;
+    const maxTravel = dx > 0 ? MAX_TRAVEL_RIGHT : MAX_TRAVEL_LEFT;
+    const clamp = Math.min(dist, maxTravel * 10) / (maxTravel * 10);
+    const tx = (dx / dist) * clamp * maxTravel;
 
     svgEl.querySelectorAll('#pupil-left, #pupil-right').forEach(p => {
-      p.setAttribute('transform', `translate(${tx}, ${ty})`);
+      p.setAttribute('transform', `translate(${tx}, 0)`);
     });
   });
 }
