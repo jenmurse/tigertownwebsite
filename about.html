@@ -44,5 +44,12 @@
   </main>
 
   <script src="main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.hero-single, .hero-duo-item').forEach(el => {
+        el.classList.add('revealed');
+      });
+    });
+  </script>
 </body>
 </html>
