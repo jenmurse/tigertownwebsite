@@ -18,7 +18,7 @@
     </nav>
 
     <div class="project-header">
-      <div class="project-category">TECHNICAL</div>
+      <div class="project-category">STUDIO</div>
       <h1 class="project-title">Bear Car</h1>
       <p class="project-intro">Jen had always wanted an art car for Burning Man however she never wanted something that was going to be impossible to transport. Garth designed a car that would easily break down into manageable parts and designed it in Jen's favorite bear character, Rilakkuma.</p>
       <p class="project-additional-details">Addtional details:</p>
@@ -145,35 +145,25 @@
 
       // ── JUSTIFIED GRID LAYOUT ──
       const ROW_HEIGHT = 280;  // target row height px
-      const GAP = 14;
       const grid = document.getElementById('photo-grid');
       const rawImgs = Array.from(grid.querySelectorAll('.grid-img'));
 
-      // get container width (the .page max-width minus padding)
       function containerWidth() {
         return grid.getBoundingClientRect().width;
       }
+      function getGap() { return window.innerWidth <= 580 ? 6 : 14; }
 
       function buildGrid(images) {
         const W = containerWidth();
+        const GAP = getGap();
         grid.innerHTML = '';
         grid.classList.remove('loading');
-        // observe after next paint so items are in DOM
         requestAnimationFrame(() => observeGridItems());
 
-        // compute natural aspect ratios
         const ratios = images.map(img => img.naturalWidth / img.naturalHeight || 1.5);
 
-        // greedy row packing
         let i = 0;
         while (i < images.length) {
-          // figure out how many images fit in this row
-          // try j images: total width at ROW_HEIGHT = sum(ratio * ROW_HEIGHT)
-          // with gaps = (j-1)*GAP
-          // scale so total = W: scale = (W - (j-1)*GAP) / sum(ratio * ROW_HEIGHT)
-          // final height = ROW_HEIGHT * scale
-          // we want height between ROW_HEIGHT*0.7 and ROW_HEIGHT*1.2
-
           let j = 1;
           let best = 1;
           for (j = 1; j <= images.length - i; j++) {
@@ -184,7 +174,6 @@
             const scale = (W - gaps) / totalNaturalW;
             const rowH = ROW_HEIGHT * scale;
             best = j;
-            // if adding one more would make row too short, stop
             if (rowH < ROW_HEIGHT * 0.72) { best = j - 1; break; }
           }
           if (best < 1) best = 1;
@@ -193,28 +182,20 @@
           const sliceImgs = images.slice(i, i + best);
           const sumRatios = slice.reduce((a, b) => a + b, 0);
           const gaps = (best - 1) * GAP;
-          // for last row: don't upscale beyond natural — just use ROW_HEIGHT
           const isLastRow = (i + best >= images.length);
-          let rowH;
-          if (isLastRow) {
-            rowH = ROW_HEIGHT;
-          } else {
-            rowH = (W - gaps) / sumRatios / 1; // scale to fill width
-            // recompute: each img width = ratio * rowH
-            // sum(ratio*rowH) + gaps = W  →  rowH = (W-gaps)/sumRatios
-            rowH = (W - gaps) / sumRatios;
-          }
+          // for last row: use ROW_HEIGHT but cap if it would overflow
+          const lastRowW = sumRatios * ROW_HEIGHT + gaps;
+          const rowH = isLastRow && lastRowW <= W ? ROW_HEIGHT : (W - gaps) / sumRatios;
 
-          // build row
           const row = document.createElement('div');
           row.className = 'grid-row';
 
           sliceImgs.forEach((img, k) => {
-            const itemW = isLastRow ? (ratios[i+k] * ROW_HEIGHT) : (ratios[i+k] * rowH);
+            const itemW = Math.floor(ratios[i+k] * rowH);
             const item = document.createElement('div');
             item.className = 'grid-item';
             item.style.width = itemW + 'px';
-            item.style.height = (isLastRow ? ROW_HEIGHT : rowH) + 'px';
+            item.style.height = Math.floor(rowH) + 'px';
             item.dataset.index = img.dataset.index;
             const imgEl = document.createElement('img');
             imgEl.src = img.src;

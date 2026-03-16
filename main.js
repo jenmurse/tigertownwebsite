@@ -101,6 +101,24 @@ function initEyeTracking(svgEl) {
   })();
 }
 
+// Build the RAWR!!! text element for a logo container
+function addRoarText(container) {
+  if (container.querySelector('.roar-text')) return;
+  const roar = document.createElement('span');
+  roar.className = 'roar-text';
+  roar.setAttribute('aria-hidden', 'true');
+  const letters = 'RAWR!!!'.split('');
+  const minSize = 0.45;
+  const maxSize = 1.1;
+  letters.forEach((char, i) => {
+    const span = document.createElement('span');
+    span.textContent = char;
+    span.style.fontSize = (minSize + (maxSize - minSize) * (i / (letters.length - 1))) + 'rem';
+    roar.appendChild(span);
+  });
+  container.appendChild(roar);
+}
+
 fetch('tiger-town-animated-mark.svg')
   .then(r => r.text())
   .then(svgText => {
@@ -118,6 +136,7 @@ fetch('tiger-town-animated-mark.svg')
       container.appendChild(svgEl);
 
       initEyeTracking(svgEl);
+      addRoarText(container);
     });
   });
 
@@ -125,20 +144,20 @@ fetch('tiger-town-animated-mark.svg')
 // Single source of truth for all project links.
 // To add, remove, or rename: edit PROJECTS only.
 const PROJECTS = {
-  technical: [
-    { label: 'Bear Car',          href: 'bear-car.html' },
-    { label: 'Boombox Suitcases', href: 'boombox-suitcases.html' },
-    { label: 'Coffee Grinder',    href: 'coffee-grinder.html' },
-    { label: 'Disco Dance Floor', href: 'disco-dancefloor.html' },
-    { label: 'Photo Booth',       href: 'photo-booth.html', wip: true },
+  studio: [
+    { label: 'Bear Car',               href: 'bear-car.html' },
+    { label: 'Boombox Suitcases',      href: 'boombox-suitcases.html' },
+    { label: 'Coffee Grinder',         href: 'coffee-grinder.html' },
+    { label: 'Disco Dance Floor',      href: 'disco-dancefloor.html' },
+    { label: 'Photo Booth',            href: 'photo-booth.html', wip: true },
+    { label: 'Wedding Save the Date',  href: 'wedding-save-the-date.html' },
   ],
-  nonTechnical: [
+  kitchen: [
     { label: 'Alternative Baking',    href: 'alt-baking.html' },
     { label: 'Coffee Roasting',       href: 'coffee-roasting.html' },
     { label: 'Vegan Ice Cream',       href: 'vegan-ice-cream.html' },
-    { label: 'Wedding Save the Date', href: 'wedding-save-the-date.html' },
   ],
-  findUs: [
+  hello: [
     { label: 'About Us',  href: 'about.html' },
     { label: 'Jen',       href: 'https://jenmurse.com',  external: true },
     { label: 'Garth',     href: 'https://garth.app',     external: true },
@@ -164,9 +183,9 @@ if (navEl) {
       </div>`;
   }
   navEl.innerHTML =
-    renderNavCol('Technical', PROJECTS.technical) +
-    renderNavCol('Non-technical', PROJECTS.nonTechnical) +
-    renderNavCol('Find Us', PROJECTS.findUs);
+    renderNavCol('Studio', PROJECTS.studio) +
+    renderNavCol('Kitchen', PROJECTS.kitchen) +
+    renderNavCol('Hello', PROJECTS.hello);
 }
 
 // ── HOMEPAGE LINK GRID ──
@@ -186,9 +205,9 @@ if (gridEl) {
       </div>`;
   }
   gridEl.innerHTML =
-    renderGridSection('Technical',     PROJECTS.technical,    '0.28s') +
-    renderGridSection('Non-technical', PROJECTS.nonTechnical, '0.33s') +
-    renderGridSection('Find Us',       PROJECTS.findUs,       '0.38s');
+    renderGridSection('Studio',  PROJECTS.studio,  '0.28s') +
+    renderGridSection('Kitchen', PROJECTS.kitchen,  '0.33s') +
+    renderGridSection('Hello',   PROJECTS.hello,    '0.38s');
 }
 
 // ── MODAL SHELL ──

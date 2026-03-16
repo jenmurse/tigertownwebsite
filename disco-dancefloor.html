@@ -18,7 +18,7 @@
     </nav>
 
     <div class="project-header">
-      <div class="project-category">TECHNICAL</div>
+      <div class="project-category">STUDIO</div>
       <h1 class="project-title">Disco Dance Floor</h1>
       <p class="project-intro">In late 2011, Jen and her friend Kyla decided they wanted to build a light up dance floor for Burning Man 2012. Kyla had Jen email a small group to kick off the project. Garth was the first to respond to Jen, who she had never met. He said it would be tough and wasn't sure he could help. In 2012, Jen and Garth meet for the first time, start dating, yet no dance floor is made for Burning Man. Fast forward to their wedding planning when Jen suggests they build the disco dance floor, marking their very first interaction. Garth was reluctant, knowing the effort involved, but finally caved. With the help of many friends, the result was truly magical when they stepped on it for their "first dance." The rest is history.</p>
       <p class="project-additional-details">Addtional details:</p>
@@ -27,14 +27,14 @@
 
     <div class="project-hero">
       <div class="hero-single" data-index="0">
-        <img src="images/disco-dance-floor/788.JPG" alt="Disco Dance Floor">
+        <img src="images/disco-dance-floor/IMG_20170805_220131.jpg" alt="Disco Dance Floor">
       </div>
     </div>
 
     <div class="photo-grid loading" id="photo-grid">
-      <img class="grid-img" src="images/disco-dance-floor/IMG_9837.jpg" data-index="1" alt="" loading="lazy">
-      <img class="grid-img" src="images/disco-dance-floor/IMG_9856.jpg" data-index="2" alt="" loading="lazy">
-      <img class="grid-img" src="images/disco-dance-floor/IMG_20170805_220131.jpg" data-index="3" alt="" loading="lazy">
+      <img class="grid-img" src="images/disco-dance-floor/788.JPG" data-index="1" alt="" loading="lazy">
+      <img class="grid-img" src="images/disco-dance-floor/IMG_9837.jpg" data-index="2" alt="" loading="lazy">
+      <img class="grid-img" src="images/disco-dance-floor/IMG_9856.jpg" data-index="3" alt="" loading="lazy">
       <img class="grid-img" src="images/disco-dance-floor/IMG_20170806_010354.jpg" data-index="4" alt="" loading="lazy">
       <img class="grid-img" src="images/disco-dance-floor/IMG_7202.jpg" data-index="5" alt="" loading="lazy">
       <img class="grid-img" src="images/disco-dance-floor/IMG_7206.jpg" data-index="6" alt="" loading="lazy">
@@ -90,14 +90,15 @@
 
       // ── JUSTIFIED GRID ──
       const ROW_HEIGHT = 280;
-      const GAP = 14;
       const grid = document.getElementById('photo-grid');
       const rawImgs = Array.from(grid.querySelectorAll('.grid-img'));
 
       function containerWidth() { return grid.getBoundingClientRect().width; }
+      function getGap() { return window.innerWidth <= 580 ? 6 : 14; }
 
       function buildGrid(images) {
         const W = containerWidth();
+        const GAP = getGap();
         grid.innerHTML = '';
         grid.classList.remove('loading');
         const ratios = images.map(img => img.naturalWidth / img.naturalHeight || 1.5);
@@ -118,15 +119,16 @@
           const sumR = slice.reduce((a, b) => a + b, 0);
           const gaps = (best - 1) * GAP;
           const isLast = (i + best >= images.length);
-          const rowH = isLast ? ROW_HEIGHT : (W - gaps) / sumR;
+          const lastRowW = sumR * ROW_HEIGHT + gaps;
+          const rowH = isLast && lastRowW <= W ? ROW_HEIGHT : (W - gaps) / sumR;
           const row = document.createElement('div');
           row.className = 'grid-row';
           sliceImgs.forEach((img, k) => {
-            const itemW = isLast ? (ratios[i + k] * ROW_HEIGHT) : (ratios[i + k] * rowH);
+            const itemW = Math.floor(ratios[i + k] * rowH);
             const item = document.createElement('div');
             item.className = 'grid-item';
             item.style.width = itemW + 'px';
-            item.style.height = (isLast ? ROW_HEIGHT : rowH) + 'px';
+            item.style.height = Math.floor(rowH) + 'px';
             item.dataset.index = img.dataset.index;
             const imgEl = document.createElement('img');
             imgEl.src = img.src;
@@ -155,7 +157,7 @@
 
       // ── MODAL ──
       const allCaptions = [];
-      const allImgs = ['images/disco-dance-floor/788.JPG', 'images/disco-dance-floor/IMG_9837.jpg', 'images/disco-dance-floor/IMG_9856.jpg', 'images/disco-dance-floor/IMG_20170805_220131.jpg', 'images/disco-dance-floor/IMG_20170806_010354.jpg', 'images/disco-dance-floor/IMG_7202.jpg', 'images/disco-dance-floor/IMG_7206.jpg', 'images/disco-dance-floor/IMG_7258.jpg', 'images/disco-dance-floor/IMG_7259.jpg', 'images/disco-dance-floor/IMG_7263.jpg', 'images/disco-dance-floor/IMG_7277.jpg', 'images/disco-dance-floor/IMG_7282.jpg', 'images/disco-dance-floor/IMG_7370.jpg', 'images/disco-dance-floor/IMG_7372.jpg', 'images/disco-dance-floor/IMG_7480.jpg', 'images/disco-dance-floor/IMG_7661.jpg', 'images/disco-dance-floor/IMG_7645.jpg', 'images/disco-dance-floor/IMG_20170805_124755.jpg', 'images/disco-dance-floor/IMG_20170805_134309.jpg', 'images/disco-dance-floor/IMG_20170806_114701.jpg', 'images/disco-dance-floor/IMG_7637.gif', 'images/disco-dance-floor/IMG_7621.gif', 'images/disco-dance-floor/IMG_9857.gif'];
+      const allImgs = ['images/disco-dance-floor/IMG_20170805_220131.jpg', 'images/disco-dance-floor/788.JPG', 'images/disco-dance-floor/IMG_9837.jpg', 'images/disco-dance-floor/IMG_9856.jpg', 'images/disco-dance-floor/IMG_20170806_010354.jpg', 'images/disco-dance-floor/IMG_7202.jpg', 'images/disco-dance-floor/IMG_7206.jpg', 'images/disco-dance-floor/IMG_7258.jpg', 'images/disco-dance-floor/IMG_7259.jpg', 'images/disco-dance-floor/IMG_7263.jpg', 'images/disco-dance-floor/IMG_7277.jpg', 'images/disco-dance-floor/IMG_7282.jpg', 'images/disco-dance-floor/IMG_7370.jpg', 'images/disco-dance-floor/IMG_7372.jpg', 'images/disco-dance-floor/IMG_7480.jpg', 'images/disco-dance-floor/IMG_7661.jpg', 'images/disco-dance-floor/IMG_7645.jpg', 'images/disco-dance-floor/IMG_20170805_124755.jpg', 'images/disco-dance-floor/IMG_20170805_134309.jpg', 'images/disco-dance-floor/IMG_20170806_114701.jpg', 'images/disco-dance-floor/IMG_7637.gif', 'images/disco-dance-floor/IMG_7621.gif', 'images/disco-dance-floor/IMG_9857.gif'];
       const modal = document.getElementById('modal');
       const modalImg = document.getElementById('modal-img');
       const modalPrev = document.getElementById('modal-prev');

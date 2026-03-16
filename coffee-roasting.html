@@ -18,7 +18,7 @@
     </nav>
 
     <div class="project-header">
-      <div class="project-category">NON-TECHNICAL</div>
+      <div class="project-category">KITCHEN</div>
       <h1 class="project-title">Coffee Roasting</h1>
       <p class="project-intro">Jen and Garth both love coffee. In addition to it being more economical to roast their own beans, Garth's passion for learning and perfecting a craft led to him roasting his own coffee. He sources green beans from a variety of regions and is continuing to perfect his roasts.</p>
       <p class="project-additional-details">Addtional details:</p>
@@ -70,14 +70,15 @@
 
       // ── JUSTIFIED GRID ──
       const ROW_HEIGHT = 280;
-      const GAP = 14;
       const grid = document.getElementById('photo-grid');
       const rawImgs = Array.from(grid.querySelectorAll('.grid-img'));
 
       function containerWidth() { return grid.getBoundingClientRect().width; }
+      function getGap() { return window.innerWidth <= 580 ? 6 : 14; }
 
       function buildGrid(images) {
         const W = containerWidth();
+        const GAP = getGap();
         grid.innerHTML = '';
         grid.classList.remove('loading');
         const ratios = images.map(img => img.naturalWidth / img.naturalHeight || 1.5);
@@ -98,15 +99,16 @@
           const sumR = slice.reduce((a, b) => a + b, 0);
           const gaps = (best - 1) * GAP;
           const isLast = (i + best >= images.length);
-          const rowH = isLast ? ROW_HEIGHT : (W - gaps) / sumR;
+          const lastRowW = sumR * ROW_HEIGHT + gaps;
+          const rowH = isLast && lastRowW <= W ? ROW_HEIGHT : (W - gaps) / sumR;
           const row = document.createElement('div');
           row.className = 'grid-row';
           sliceImgs.forEach((img, k) => {
-            const itemW = isLast ? (ratios[i + k] * ROW_HEIGHT) : (ratios[i + k] * rowH);
+            const itemW = Math.floor(ratios[i + k] * rowH);
             const item = document.createElement('div');
             item.className = 'grid-item';
             item.style.width = itemW + 'px';
-            item.style.height = (isLast ? ROW_HEIGHT : rowH) + 'px';
+            item.style.height = Math.floor(rowH) + 'px';
             item.dataset.index = img.dataset.index;
             const imgEl = document.createElement('img');
             imgEl.src = img.src;

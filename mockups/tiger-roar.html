@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tiger Roar — RAWR Variations</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400;700;800&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Funnel Display', sans-serif;
+      background: #fff;
+      color: #111;
+      padding: 56px 64px 96px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 64px;
+      font-weight: 400;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+    }
+
+    .option {
+      border-top: 1px solid #eee;
+      padding-top: 24px;
+    }
+
+    .option-number {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 8px;
+    }
+
+    .option-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .option-desc {
+      font-size: 0.85rem;
+      color: #888;
+      line-height: 1.5;
+      font-weight: 400;
+      margin-bottom: 32px;
+    }
+
+    .tiger-wrap {
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .tiger-wrap svg {
+      height: 56px;
+      width: auto;
+      display: block;
+    }
+
+    @keyframes microShake {
+      0%, 100% { transform: rotate(0deg); }
+      20% { transform: rotate(-3deg); }
+      40% { transform: rotate(3deg); }
+      60% { transform: rotate(-2deg); }
+      80% { transform: rotate(1deg); }
+    }
+
+    /* ═══════════════════════════════════
+       SHARED: flat text style
+    ═══════════════════════════════════ */
+    .roar-flat {
+      position: absolute;
+      left: 100%;
+      top: -4px;
+      margin-left: 10px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: #111;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(-6px) scale(0.85);
+      transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+
+    .tiger-wrap:hover .roar-flat {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    /* ═══════════════════════════════════
+       SHARED: angled scaling text
+    ═══════════════════════════════════ */
+    .roar-angled {
+      position: absolute;
+      left: 100%;
+      bottom: 50%;
+      margin-left: 6px;
+      display: flex;
+      align-items: baseline;
+      gap: 0;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+      transform-origin: left bottom;
+    }
+
+    .tiger-wrap:hover .roar-angled {
+      opacity: 1;
+      transform: translateX(0) rotate(-12deg);
+    }
+
+    .roar-angled span {
+      font-weight: 800;
+      color: #111;
+      display: inline-block;
+      line-height: 1;
+    }
+
+    /* ═══════════════════════════════════
+       OPTION 1 — Shake + flat RAWR!!!
+    ═══════════════════════════════════ */
+    .opt-1 .tiger-wrap:hover svg {
+      animation: microShake 0.4s ease;
+    }
+
+    /* ═══════════════════════════════════
+       OPTION 2 — Shake + angled RAWR!!!
+    ═══════════════════════════════════ */
+    .opt-2 .tiger-wrap:hover svg {
+      animation: microShake 0.4s ease;
+    }
+
+    /* ═══════════════════════════════════
+       OPTION 3 — No shake + flat RAWR!!!
+    ═══════════════════════════════════ */
+    /* (no extra SVG rules needed) */
+
+    /* ═══════════════════════════════════
+       OPTION 4 — No shake + angled RAWR!!!
+    ═══════════════════════════════════ */
+    /* (no extra SVG rules needed) */
+
+    @media (max-width: 580px) {
+      body { padding: 32px 24px 64px; }
+      .options { grid-template-columns: 1fr; gap: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>RAWR!!! Variations</h1>
+  <p class="subtitle">Hover over each tiger to preview the interaction.</p>
+
+  <div class="options">
+
+    <!-- OPTION 1: Shake + flat text -->
+    <div class="option opt-1">
+      <div class="option-number">Option 1</div>
+      <div class="option-title">Shake + Flat Text</div>
+      <p class="option-desc">Tiger shakes, "RAWR!!!" pops up to the right — straight and level.</p>
+      <div class="tiger-wrap" aria-label="Tiger logo with shake and flat text">
+        <span class="roar-flat">RAWR!!!</span>
+      </div>
+    </div>
+
+    <!-- OPTION 2: Shake + angled scaling text -->
+    <div class="option opt-2">
+      <div class="option-number">Option 2</div>
+      <div class="option-title">Shake + Angled Text</div>
+      <p class="option-desc">Tiger shakes, "RAWR!!!" shoots upward at an angle — letters grow from small to large.</p>
+      <div class="tiger-wrap" aria-label="Tiger logo with shake and angled text">
+        <span class="roar-angled" id="angled-2"></span>
+      </div>
+    </div>
+
+    <!-- OPTION 3: No shake + flat text -->
+    <div class="option opt-3">
+      <div class="option-number">Option 3</div>
+      <div class="option-title">Still + Flat Text</div>
+      <p class="option-desc">Tiger stays still, "RAWR!!!" pops up to the right — straight and level.</p>
+      <div class="tiger-wrap" aria-label="Tiger logo with flat text, no shake">
+        <span class="roar-flat">RAWR!!!</span>
+      </div>
+    </div>
+
+    <!-- OPTION 4: No shake + angled scaling text -->
+    <div class="option opt-4">
+      <div class="option-number">Option 4</div>
+      <div class="option-title">Still + Angled Text</div>
+      <p class="option-desc">Tiger stays still, "RAWR!!!" shoots upward at an angle — letters grow from small to large.</p>
+      <div class="tiger-wrap" aria-label="Tiger logo with angled text, no shake">
+        <span class="roar-angled" id="angled-4"></span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Build angled text: each character gets progressively larger
+    function buildAngledText(containerId) {
+      const el = document.getElementById(containerId);
+      const letters = 'RAWR!!!'.split('');
+      const minSize = 0.45;  // rem — smallest (R)
+      const maxSize = 1.1;   // rem — largest (!)
+      letters.forEach((char, i) => {
+        const span = document.createElement('span');
+        span.textContent = char;
+        const t = i / (letters.length - 1);
+        const size = minSize + (maxSize - minSize) * t;
+        span.style.fontSize = size + 'rem';
+        el.appendChild(span);
+      });
+    }
+
+    buildAngledText('angled-2');
+    buildAngledText('angled-4');
+
+    // Inline the tiger SVG into each .tiger-wrap
+    fetch('../tiger-town-animated-mark.svg')
+      .then(r => r.text())
+      .then(svgText => {
+        document.querySelectorAll('.tiger-wrap').forEach(wrap => {
+          const temp = document.createElement('div');
+          temp.innerHTML = svgText;
+          const svg = temp.firstElementChild;
+          svg.style.height = '56px';
+          svg.style.width = 'auto';
+          svg.style.display = 'block';
+          wrap.appendChild(svg);
+        });
+      });
+  </script>
+
+</body>
+</html>
