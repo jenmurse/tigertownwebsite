@@ -18,9 +18,55 @@ document.addEventListener('mousemove', (e) => {
 // ── CANVAS PAINT ──
 const canvas = document.getElementById('paint-canvas');
 const ctx    = canvas.getContext('2d');
-const ACCENT = [174, 255, 208]; // matches --accent: #aeffd0
 const strokes = [];
 let lastX = null, lastY = null;
+
+// ── TRAIL COLORS (speed-based) ──
+// Slow → fast. Add or remove rows to change the palette.
+// To switch to HSL sweep instead, see the comment block below.
+const TRAIL_COLORS = [
+  [174, 255, 208],  // mint (slow)
+  [255, 217, 106],  // warm gold (medium)
+  [255, 107, 157],  // hot pink (fast)
+];
+const SPEED_MAX = 50; // pixels/frame — speeds above this get the last color
+
+// Returns blended [r,g,b] for a given speed
+function trailColor(speed) {
+  const t = Math.min(speed / SPEED_MAX, 1); // 0–1
+  const pos = t * (TRAIL_COLORS.length - 1); // position in color array
+  const lo = Math.floor(pos);
+  const hi = Math.min(lo + 1, TRAIL_COLORS.length - 1);
+  const mix = pos - lo;
+  return [
+    Math.round(TRAIL_COLORS[lo][0] + (TRAIL_COLORS[hi][0] - TRAIL_COLORS[lo][0]) * mix),
+    Math.round(TRAIL_COLORS[lo][1] + (TRAIL_COLORS[hi][1] - TRAIL_COLORS[lo][1]) * mix),
+    Math.round(TRAIL_COLORS[lo][2] + (TRAIL_COLORS[hi][2] - TRAIL_COLORS[lo][2]) * mix),
+  ];
+}
+
+// ── HSL SWEEP (alternative — uncomment to use instead) ──
+// Replace trailColor() above with this to sweep through a hue range:
+//
+// const HUE_SLOW = 150;  // mint-green
+// const HUE_FAST = 330;  // hot pink
+// function trailColor(speed) {
+//   const t = Math.min(speed / SPEED_MAX, 1);
+//   const h = HUE_SLOW + (HUE_FAST - HUE_SLOW) * t;
+//   // convert HSL to RGB (s=100%, l=70%)
+//   const s = 1, l = 0.7;
+//   const c = (1 - Math.abs(2 * l - 1)) * s;
+//   const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+//   const m = l - c / 2;
+//   let r, g, b;
+//   if (h < 60)       { r=c; g=x; b=0; }
+//   else if (h < 120) { r=x; g=c; b=0; }
+//   else if (h < 180) { r=0; g=c; b=x; }
+//   else if (h < 240) { r=0; g=x; b=c; }
+//   else if (h < 300) { r=x; g=0; b=c; }
+//   else              { r=c; g=0; b=x; }
+//   return [Math.round((r+m)*255), Math.round((g+m)*255), Math.round((b+m)*255)];
+// }
 
 function resize() {
   canvas.width  = window.innerWidth;
@@ -32,6 +78,7 @@ window.addEventListener('resize', resize);
 function addStroke(x, y) {
   if (lastX !== null) {
     const dist  = Math.hypot(x - lastX, y - lastY);
+    const color = trailColor(dist);
     const steps = Math.max(1, Math.floor(dist / 6));
     for (let i = 0; i <= steps; i++) {
       const t = i / steps;
@@ -39,7 +86,8 @@ function addStroke(x, y) {
         x: lastX + (x - lastX) * t,
         y: lastY + (y - lastY) * t,
         r: 26 * (0.6 + Math.random() * 0.4),
-        life: 90, maxLife: 90
+        life: 90, maxLife: 90,
+        color: color
       });
     }
   }
@@ -57,7 +105,7 @@ document.addEventListener('mouseleave', () => { lastX = null; lastY = null; });
     const a = (s.life / s.maxLife) * 0.16;
     ctx.beginPath();
     ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(${ACCENT[0]},${ACCENT[1]},${ACCENT[2]},${a})`;
+    ctx.fillStyle = `rgba(${s.color[0]},${s.color[1]},${s.color[2]},${a})`;
     ctx.fill();
   }
   requestAnimationFrame(draw);
