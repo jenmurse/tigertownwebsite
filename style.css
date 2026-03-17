@@ -193,7 +193,7 @@ html, body {
 ════════════════════════════════════════ */
 .link-grid {
   display: grid;
-  grid-template-columns: max-content max-content max-content;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 0 var(--col-gap);
 }
 
@@ -508,7 +508,7 @@ html, body {
   padding-top: 32px;
   border-top: 1px solid #efefef;
   display: grid;
-  grid-template-columns: max-content max-content max-content;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 0 var(--col-gap);
 }
 
