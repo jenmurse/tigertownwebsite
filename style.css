@@ -284,21 +284,22 @@ html, body {
 .project-additional-details {
   margin-top: 24px;
   padding-top: 24px;
-  font-size: 0.7rem;
-  font-weight: 200;
+  font-size: 0.65rem;
+  font-weight: 700;
   color: var(--text-primary);
   line-height: 1.8;
-  letter-spacing: .01em;
+  letter-spacing: .08em;
   text-transform: uppercase;
   opacity: 0;
   animation: fadeUp 0.5s ease 0.2s forwards;
 }
 
 .project-details {
-  font-size: 1rem;
-  font-weight: 200;
+  max-width: 50%;
+  font-size: 0.8rem;
+  font-weight: 300;
   color: var(--text-primary);
-  line-height: 1.35;
+  line-height: 1.55;
   opacity: 0;
   animation: fadeUp 0.5s ease 0.2s forwards;
 }
@@ -664,6 +665,10 @@ html, body {
   margin-top: 24px;
 }
 
+.about-columns .project-details {
+  max-width: 100%;
+}
+
 /* ════════════════════════════════════════
    MOBILE
 ════════════════════════════════════════ */
@@ -680,6 +685,7 @@ html, body {
   .bottom-nav { grid-template-columns: 1fr; gap: 32px 0; }
   .about-columns { grid-template-columns: 1fr; gap: 0; }
   .about-columns .project-additional-details { margin-top: 24px; padding-top: 0; }
+  .project-details { max-width: 100%; }
   .hero-duo { gap: 6px; }
   .grid-row { gap: 6px; margin-bottom: 6px; }
 
