@@ -11,12 +11,14 @@
   --bg: #ffffff;
   --text-primary: #111111;
   --text-secondary: #c0c0c0;
-  --text-mid: #888888;
+  --text-mid: #555555;
   --accent: #aeffd0;
+  --kitchen: #ffd96a;
+  --hello: #ff6b9d;
   --max-width: 1200px;
   --page-pad: 64px;
   --gallery-h: 62vh;
-  --col-gap: 212px;
+  --col-gap: clamp(48px, 15vw, 212px);
 }
 
 /* ════════════════════════════════════════
@@ -227,7 +229,7 @@ html, body {
 }
 
 .link-list a {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 400;
   color: var(--text-mid);
   text-decoration: none;
@@ -250,8 +252,8 @@ html, body {
 .link-list a:hover { color: var(--text-primary); }
 
 [data-col="studio"] .link-list a::after { background: var(--accent); }
-[data-col="kitchen"] .link-list a::after { background: #ffd96a; }
-[data-col="hello"] .link-list a::after { background: #ff6b9d; }
+[data-col="kitchen"] .link-list a::after { background: var(--kitchen); }
+[data-col="hello"] .link-list a::after { background: var(--hello); }
 
 .wip-tag {
   font-size: 0.55rem;
@@ -549,7 +551,7 @@ html, body {
 }
 
 .bottom-nav-list a {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 400;
   color: var(--text-secondary);
   text-decoration: none;
@@ -572,8 +574,8 @@ html, body {
 .bottom-nav-list a:hover { color: var(--text-primary); }
 
 [data-col="studio"] .bottom-nav-list a::after { background: var(--accent); }
-[data-col="kitchen"] .bottom-nav-list a::after { background: #ffd96a; }
-[data-col="hello"] .bottom-nav-list a::after { background: #ff6b9d; }
+[data-col="kitchen"] .bottom-nav-list a::after { background: var(--kitchen); }
+[data-col="hello"] .bottom-nav-list a::after { background: var(--hello); }
 .bottom-nav-list a.current { color: var(--text-primary); font-weight: 700; }
 
 /* ════════════════════════════════════════
