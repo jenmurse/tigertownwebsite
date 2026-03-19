@@ -223,7 +223,7 @@ if (navEl) {
       const external = p.external ? ' target="_blank" rel="noopener"' : '';
       return `<li><a href="${p.href}"${external}${isCurrent ? ' class="current"' : ''}>${p.label}</a>${wip}</li>`;
     }).join('\n          ');
-    return `<div>
+    return `<div data-col="${label.toLowerCase()}">
         <div class="bottom-nav-label">${label}</div>
         <ul class="bottom-nav-list">
           ${lis}
@@ -245,7 +245,7 @@ if (gridEl) {
       const external = p.external ? ' target="_blank" rel="noopener"' : '';
       return `<li><a href="${p.href}"${external}>${p.label}</a>${wip}</li>`;
     }).join('\n          ');
-    return `<div class="link-section" style="animation-delay:${delay}">
+    return `<div class="link-section" data-col="${label.toLowerCase()}" style="animation-delay:${delay}">
         <div class="section-label">${label}</div>
         <ul class="link-list">
           ${lis}

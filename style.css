@@ -233,9 +233,25 @@ html, body {
   text-decoration: none;
   line-height: 1.5;
   transition: color 0.12s;
+  position: relative;
 }
 
+.link-list a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 3px;
+  transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.link-list a:hover::after { width: 100%; }
 .link-list a:hover { color: var(--text-primary); }
+
+[data-col="studio"] .link-list a::after { background: var(--accent); }
+[data-col="kitchen"] .link-list a::after { background: #ffd96a; }
+[data-col="hello"] .link-list a::after { background: #ff6b9d; }
 
 .wip-tag {
   font-size: 0.55rem;
@@ -539,9 +555,25 @@ html, body {
   text-decoration: none;
   line-height: 1.5;
   transition: color 0.12s;
+  position: relative;
 }
 
+.bottom-nav-list a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 3px;
+  transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bottom-nav-list a:hover::after { width: 100%; }
 .bottom-nav-list a:hover { color: var(--text-primary); }
+
+[data-col="studio"] .bottom-nav-list a::after { background: var(--accent); }
+[data-col="kitchen"] .bottom-nav-list a::after { background: #ffd96a; }
+[data-col="hello"] .bottom-nav-list a::after { background: #ff6b9d; }
 .bottom-nav-list a.current { color: var(--text-primary); font-weight: 700; }
 
 /* ════════════════════════════════════════

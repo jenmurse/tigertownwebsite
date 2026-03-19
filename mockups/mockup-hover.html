@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hover Mockup — Tiger Town</title>
+  <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --text-primary: #111111;
+      --text-secondary: #c0c0c0;
+      --studio: #aeffd0;
+      --kitchen: #ffd96a;
+      --hello: #ff6b9d;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Funnel Display', sans-serif;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      cursor: none;
+    }
+
+    #cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--text-primary);
+      pointer-events: none;
+      z-index: 100;
+      transform: translate(-50%, -50%);
+      transition: background-color 0.2s ease,
+                  width 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                  height 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    #cursor.enlarged {
+      width: 16px; height: 16px;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 56px 64px 96px;
+    }
+
+    .mockup-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 48px;
+      border-bottom: 1px dashed #e0e0e0;
+      padding-bottom: 12px;
+    }
+
+    .hero { margin-bottom: 96px; }
+    .hero-line1 {
+      font-size: clamp(2.375rem, 6vw, 3.875rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .hero-line2 {
+      font-size: clamp(1.9rem, 4.8vw, 3.1rem);
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-top: 0.2em;
+    }
+
+    .link-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0 212px;
+    }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .link-list { list-style: none; }
+    .link-list li {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .link-list a {
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      text-decoration: none;
+      line-height: 1.5;
+      transition: color 0.15s ease;
+      position: relative;
+    }
+    .link-list a:hover { color: var(--text-primary); }
+
+    /* pixel underline */
+    .link-list a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 3px;
+      transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .link-list a:hover::after { width: 100%; }
+
+    [data-col="studio"] .link-list a::after { background: var(--studio); }
+    [data-col="kitchen"] .link-list a::after { background: var(--kitchen); }
+    [data-col="hello"] .link-list a::after { background: var(--hello); }
+
+    .wip-tag {
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      border: 1px solid currentColor;
+      padding: 1px 4px;
+      opacity: 0.5;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="paint-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50;"></canvas>
+  <div id="cursor"></div>
+
+  <div class="page">
+    <div class="mockup-label">Mockup — Pixel underline + cursor color change (both match column color)</div>
+
+    <div class="hero">
+      <div class="hero-line1">Jen and Garth love to create.</div>
+      <div class="hero-line2">They collaborate on projects using their collective design and engineering skills. She pushes pixels and makes a mess in the kitchen, and he roasts coffee and builds cool shit. They call their little lab Tiger Town, and this is a portfolio of their projects.</div>
+    </div>
+
+    <div class="link-grid">
+      <div data-col="studio">
+        <div class="section-label">Studio</div>
+        <ul class="link-list">
+          <li><a href="#" data-cursor="var(--studio)">Bear Car</a></li>
+          <li><a href="#" data-cursor="var(--studio)">Boombox Suitcases</a></li>
+          <li><a href="#" data-cursor="var(--studio)">Coffee Grinder</a></li>
+          <li><a href="#" data-cursor="var(--studio)">Disco Dance Floor</a></li>
+          <li><a href="#" data-cursor="var(--studio)">Photo Booth</a> <span class="wip-tag">WIP</span></li>
+          <li><a href="#" data-cursor="var(--studio)">Wedding Save the Date</a></li>
+        </ul>
+      </div>
+      <div data-col="kitchen">
+        <div class="section-label">Kitchen</div>
+        <ul class="link-list">
+          <li><a href="#" data-cursor="var(--kitchen)">Alternative Baking</a></li>
+          <li><a href="#" data-cursor="var(--kitchen)">Coffee Roasting</a></li>
+          <li><a href="#" data-cursor="var(--kitchen)">Vegan Ice Cream</a></li>
+        </ul>
+      </div>
+      <div data-col="hello">
+        <div class="section-label">Hello</div>
+        <ul class="link-list">
+          <li><a href="#" data-cursor="var(--hello)">About Us</a></li>
+          <li><a href="#" data-cursor="var(--hello)">Jen</a></li>
+          <li><a href="#" data-cursor="var(--hello)">Garth</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+
+    // ── CANVAS PAINT TRAIL ──
+    const canvas = document.getElementById('paint-canvas');
+    const ctx    = canvas.getContext('2d');
+    const strokes = [];
+    let lastX = null, lastY = null;
+
+    const TRAIL_COLORS = [
+      [174, 255, 208],  // mint (slow)
+      [255, 217, 106],  // warm gold (medium)
+      [255, 107, 157],  // hot pink (fast)
+    ];
+    const SPEED_MAX = 50;
+
+    function trailColor(speed) {
+      const t = Math.min(speed / SPEED_MAX, 1);
+      const pos = t * (TRAIL_COLORS.length - 1);
+      const lo = Math.floor(pos);
+      const hi = Math.min(lo + 1, TRAIL_COLORS.length - 1);
+      const mix = pos - lo;
+      return [
+        Math.round(TRAIL_COLORS[lo][0] + (TRAIL_COLORS[hi][0] - TRAIL_COLORS[lo][0]) * mix),
+        Math.round(TRAIL_COLORS[lo][1] + (TRAIL_COLORS[hi][1] - TRAIL_COLORS[lo][1]) * mix),
+        Math.round(TRAIL_COLORS[lo][2] + (TRAIL_COLORS[hi][2] - TRAIL_COLORS[lo][2]) * mix),
+      ];
+    }
+
+    function resize() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function addStroke(x, y) {
+      if (lastX !== null) {
+        const dist  = Math.hypot(x - lastX, y - lastY);
+        const color = trailColor(dist);
+        const steps = Math.max(1, Math.floor(dist / 6));
+        for (let i = 0; i <= steps; i++) {
+          const t = i / steps;
+          strokes.push({
+            x: lastX + (x - lastX) * t,
+            y: lastY + (y - lastY) * t,
+            r: 26 * (0.6 + Math.random() * 0.4),
+            life: 90, maxLife: 90,
+            color: color
+          });
+        }
+      }
+      lastX = x; lastY = y;
+    }
+
+    document.addEventListener('mouseleave', () => { lastX = null; lastY = null; });
+
+    (function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = strokes.length - 1; i >= 0; i--) {
+        const s = strokes[i];
+        s.life--;
+        if (s.life <= 0) { strokes.splice(i, 1); continue; }
+        const a = (s.life / s.maxLife) * 0.16;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${s.color[0]},${s.color[1]},${s.color[2]},${a})`;
+        ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    })();
+
+    // ── CURSOR + HOVER ──
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+      addStroke(e.clientX, e.clientY);
+    });
+
+    // cursor enlarges on link hover
+    document.querySelectorAll('[data-cursor]').forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        cursor.classList.add('enlarged');
+      });
+      link.addEventListener('mouseleave', () => {
+        cursor.classList.remove('enlarged');
+      });
+    });
+  </script>
+</body>
+</html>
