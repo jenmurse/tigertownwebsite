@@ -181,8 +181,8 @@ html, body {
 
 .hero-line2 {
   font-size: clamp(1.9rem, 4.8vw, 3.1rem);
-  font-weight: 400;
-  color: var(--text-secondary);
+  font-weight: 300;
+  color: var(--text-mid);
   line-height: 1.1;
   letter-spacing: -0.02em;
   margin-top: 0.2em;
@@ -229,7 +229,7 @@ html, body {
 .link-list a {
   font-size: 0.875rem;
   font-weight: 400;
-  color: var(--text-secondary);
+  color: var(--text-mid);
   text-decoration: none;
   line-height: 1.5;
   transition: color 0.12s;
