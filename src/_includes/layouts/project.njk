@@ -1,0 +1,44 @@
+---
+layout: layouts/base.njk
+---
+    <nav class="nav">
+      <a href="index.html" class="logo">
+        <img src="" alt="Tiger Town">
+      </a>
+    </nav>
+
+    <div class="project-header">
+      <div class="project-category">{{ category }}</div>
+      <h1 class="project-title">{{ projectTitle }}</h1>
+      <p class="project-intro">{{ intro | safe }}</p>
+      {% if detailsLabel %}
+      <p class="project-additional-details">{{ detailsLabel }}</p>
+      <p class="project-details">{{ details | safe }}</p>
+      {% endif %}
+    </div>
+
+    {% if wip %}
+    <div class="wip-notice">
+      <strong>Work in progress.</strong> {{ wipText | default("Photos and details coming soon.") }}
+    </div>
+    {% endif %}
+
+    {% if heroImg %}
+    <div class="project-hero">
+      <div class="hero-single" data-index="0">
+        <img src="{{ heroImg }}" alt="{{ heroAlt | default(projectTitle) }}">
+      </div>
+    </div>
+    {% endif %}
+
+    {% if allImgs %}
+    <div class="photo-grid loading" id="photo-grid">
+      {{ content | safe }}
+    </div>
+    {% endif %}
+
+    <div class="bottom-nav"></div>
+
+{% if allImgs %}
+  {% include "grid-script.njk" %}
+{% endif %}

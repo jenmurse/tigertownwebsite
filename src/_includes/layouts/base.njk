@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ site.ogDescription }}">
+  <meta property="og:image" content="{{ site.ogImage }}">
+  <meta property="og:url" content="{{ site.baseUrl }}/{{ permalink if permalink != '/' else '' }}">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="paint-canvas"></canvas>
+  <div id="cursor"></div>
+
+  <main class="page">
+    {{ content | safe }}
+  </main>
+
+  <script src="main.js"></script>
+  {% block inlineScript %}{% endblock %}
+</body>
+</html>

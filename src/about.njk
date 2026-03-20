@@ -1,21 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us | Tiger Town</title>
-  <meta property="og:title" content="About Us | Tiger Town">
-  <meta property="og:description" content="Portfolio of Jen + Garth's projects.">
-  <meta property="og:image" content="https://tigertownlab.com/OG_image_1200x630.png">
-  <meta property="og:url" content="https://tigertownlab.com/about.html">
-  <meta property="og:type" content="website">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <canvas id="paint-canvas"></canvas>
-  <div id="cursor"></div>
-
-  <main class="page">
+---
+layout: layouts/base.njk
+title: About Us | Tiger Town
+permalink: about.html
+---
     <nav class="nav">
       <a href="index.html" class="logo">
         <img src="" alt="Tiger Town">
@@ -46,9 +33,6 @@
 
     <div class="bottom-nav"></div>
 
-  </main>
-
-  <script src="main.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.hero-single, .hero-duo-item').forEach(el => {
@@ -56,5 +40,3 @@
       });
     });
   </script>
-</body>
-</html>
