@@ -1,12 +1,12 @@
 # Tiger Town — Site Design Decisions
 
-Last updated: 2026-03-14
+Last updated: 2026-08-17
 
 ## Typography
 
 | Element | Value | Notes |
 |---|---|---|
-| Font | Syne (Google Fonts) | weights 400, 700, 800 — injected via main.js, not HTML |
+| Font | Funnel Display (Google Fonts) | weights 400, 700, 800 — injected via main.js, not HTML. Self-hosted `@font-face` fallback at the top of style.css, from `src/fonts/`, for when Google Fonts is unreachable. |
 | Homepage hero line 1 | `clamp(2.375rem, 6vw, 3.875rem)` / weight 700 | line-height 1.1, letter-spacing -0.02em |
 | Homepage hero line 2 | `clamp(1.9rem, 4.8vw, 3.1rem)` / weight 400 | line-height 1.1, letter-spacing -0.02em, color: text-secondary |
 | Project title | `clamp(1.8rem, 4.5vw, 2.8rem)` / weight 700 | line-height 1.1, letter-spacing -0.02em |
@@ -16,16 +16,22 @@ Last updated: 2026-03-14
 | Nav/section labels | 0.68rem / weight 700 / uppercase | letter-spacing 0.14em |
 | Link list items | 0.875rem / weight 400 | color: text-secondary, hover → text-primary |
 
-**To swap fonts:** change the URL in `// ── FONT ──` in main.js AND `font-family` in `html, body` in style.css.
+**To swap fonts:** three places, not two — the Google Fonts URL in `// ── FONT ──` in main.js, the
+`@font-face` block at the top of style.css along with the file in `src/fonts/`, and `font-family` in
+`html, body` in style.css.
+
+> **Known leftover:** `src/style.css:487` still names `'Syne'` on the modal close button, from before
+> the Funnel Display switch. That family is no longer loaded, so the button silently falls back to
+> `sans-serif`.
 
 ## Colors
 
 | Variable | Value | Notes |
 |---|---|---|
-| `--bg` | `#ffffff` | |
+| `--bg` | `#fffcf5` | warm off-white, not pure white |
 | `--text-primary` | `#111111` | |
 | `--text-secondary` | `#c0c0c0` | links, inactive states |
-| `--text-mid` | `#888888` | available, not currently applied |
+| `--text-mid` | `#555555` | available, not currently applied |
 | `--accent` | `#aeffd0` | mint green — paint trail color |
 
 ## Layout
@@ -35,7 +41,7 @@ Last updated: 2026-03-14
 | Max content width | `--max-width: 1200px` | style.css `:root` |
 | Page padding (desktop) | `--page-pad: 64px` | style.css `:root` |
 | Page padding (mobile) | `--page-pad: 24px` | style.css `@media` |
-| Column gap (links + nav) | `--col-gap: 212px` | style.css `:root` — controls both homepage link grid and interior bottom nav |
+| Column gap (links + nav) | `--col-gap: clamp(48px, 15vw, 212px)` | style.css `:root` — controls both homepage link grid and interior bottom nav. Fluid now; 212px is the ceiling, not the value. |
 | Gallery height (legacy) | `--gallery-h: 62vh` | desktop only |
 
 **To change column gap:** edit `--col-gap` in `:root` in style.css. This controls both the homepage link grid and the interior bottom nav simultaneously.
@@ -58,7 +64,11 @@ Last updated: 2026-03-14
 - Homepage link grid builder
 - Modal shell injection
 
-**Each HTML page contains only:**
+**The site is built with Eleventy.** Sources live in `src/` as Nunjucks templates (`.njk`), one per
+project, with shared layout in `src/_includes/layouts/` and site data in `src/_data/site.json`.
+`npm run build` writes to `_site/`, which is gitignored. There are no hand-edited HTML files.
+
+**Each page template contains only:**
 - Page-specific content (title, copy, image list)
 - Justified grid builder
 - Scroll reveal
@@ -149,23 +159,28 @@ To add/rename/remove a project: edit the `PROJECTS` object in main.js only.
 
 ## File Responsibilities
 
+All paths are under `src/`.
+
 | File | Responsibility |
 |---|---|
 | `style.css` | All visual styles, global layout, variables |
 | `main.js` | Font, cursor, paint, favicon, logo, projects list, nav, link grid, modal shell |
+| `_includes/layouts/` | Shared page shell |
+| `_data/site.json` | Site-wide data |
 | `tiger-town-animated.svg` | Full logo (cat + TIGER TOWN text) with animated pupils |
 | `tiger-town-mark-animated.svg` | Cat head mark only with animated pupils |
 | `favicon.svg` | Cat head mark, static, for browser tab |
-| Each `[page].html` | Content, image list, justified grid JS, modal data |
+| Each `[page].njk` | Content, image list, justified grid JS, modal data |
 
 ---
 
 ## Open Questions
 
 - [ ] Videos — embed YouTube/Vimeo or link out?
-- [ ] About page — needs design
 - [ ] Image order per page — will be curated after layout is finalized
-- [ ] Font — possibly switching from Syne to Funnel Display
+- [x] Font — switched from Syne to Funnel Display. Done, with one leftover reference noted under
+  Typography above.
+- [x] About page — `about.njk` exists.
 
 ---
 
@@ -173,7 +188,7 @@ To add/rename/remove a project: edit the `PROJECTS` object in main.js only.
 
 > "I'm working on the Tiger Town website. Here is the current DECISIONS.md. All styles live in style.css. Drop the files I want you to edit. Please read this file before making any changes."
 
-For visual changes: **drop style.css only.**
-For content/structure changes: drop the relevant HTML file(s).
+For visual changes: **drop src/style.css only.**
+For content/structure changes: drop the relevant `.njk` template(s).
 For nav/logo/font changes: drop **main.js only.**
 For logo animation changes: edit **tiger-town-animated.svg or tiger-town-mark-animated.svg in VS Code.**

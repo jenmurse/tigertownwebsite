@@ -1,6 +1,6 @@
 # Tiger Town — Design System
 
-Last updated: 2026-03-14
+Last updated: 2026-08-17
 
 ---
 
@@ -15,24 +15,26 @@ Tiger Town is Jen and Garth's personal creative lab. The site is a project portf
 ## Color
 
 ```
---bg:             #ffffff   White — page background
+--bg:             #fffcf5   Warm off-white — page background
 --text-primary:   #111111   Near-black — headings, active states, current nav
 --text-secondary: #c0c0c0   Light gray — body links, inactive nav, captions
---text-mid:       #888888   Mid gray — available but not currently used
+--text-mid:       #555555   Mid gray — available but not currently used
 --accent:         #aeffd0   Mint green — paint trail only, not used in UI
 ```
 
-**Rule:** the palette is intentionally minimal. Black, white, and one gray for most things. The mint only appears as the cursor paint effect — it's never used as a UI color.
+**Rule:** the palette is intentionally minimal. Near-black, a warm off-white, and one gray for most things. The background is deliberately not pure white — the warmth is what keeps a spare layout from reading as clinical. The mint only appears as the cursor paint effect; it's never used as a UI color.
 
 ---
 
 ## Typography
 
-**Font family:** Syne (Google Fonts) — weights 400, 700, 800
+**Font family:** Funnel Display (Google Fonts) — weights 400, 700, 800
 
-Syne is a geometric sans with a slightly quirky, architectural quality. The site uses three weights: regular for body, bold for headings, and extrabold sparingly.
+A geometric display sans with a slightly quirky, architectural quality. The site uses three weights: regular for body, bold for headings, and extrabold sparingly. It replaced Syne; one leftover `'Syne'` reference remains at `src/style.css:487` on the modal close button, which now falls back to `sans-serif`.
 
-**To swap fonts:** change the Google Fonts URL in `// ── FONT ──` in main.js and `font-family` in `html, body` in style.css.
+A self-hosted copy in `src/fonts/` is declared as an `@font-face` at the top of style.css, so the site keeps its typeface if Google Fonts is unreachable.
+
+**To swap fonts:** three places — the Google Fonts URL in `// ── FONT ──` in main.js, the `@font-face` block and its file in `src/fonts/`, and `font-family` in `html, body` in style.css.
 
 ### Type Scale
 
@@ -71,7 +73,7 @@ The site uses a small set of spacing values — not a formal scale, but consiste
 | Bottom nav margin-top | 80px |
 | Bottom nav padding-top | 32px |
 | Link list item gap | 8px |
-| Column gap (nav + link grid) | `--col-gap` variable (currently 212px) |
+| Column gap (nav + link grid) | `--col-gap: clamp(48px, 15vw, 212px)` — fluid; 212px is the ceiling |
 
 ---
 
@@ -179,44 +181,64 @@ Small bordered label used inline in nav lists next to Photo Booth. Styled via `.
 
 ## File Map
 
+Eleventy: sources in `src/`, build output to `_site/` (gitignored). No hand-edited HTML.
+
 ```
 /
-├── index.html                     Homepage
-├── bear-car.html                  Project pages (×9)
-├── boombox-suitcases.html
-├── coffee-grinder.html
-├── coffee-roasting.html
-├── disco-dancefloor.html
-├── alt-baking.html
-├── vegan-ice-cream.html
-├── wedding-save-the-date.html
-├── photo-booth.html               WIP
-├── style.css                      All styles
-├── main.js                        All shared behavior
-├── tiger-town-animated.svg        Full logo, animated pupils
-├── tiger-town-mark-animated.svg   Mark only, animated pupils
-├── favicon.svg                    Mark only, static
-└── images/
-    ├── logo/                      (legacy GIF, no longer used)
-    ├── bear-car/
-    ├── boombox-suitcases/
-    ├── coffee-grinder/
-    ├── coffee-roasting/
-    ├── disco-dance-floor/
-    ├── alt-baking/
-    ├── ice-cream/
-    └── felt-show/
+├── .eleventy.js                   Config — input src/, output _site/, njk only
+├── package.json                   npm run dev / npm run build
+└── src/
+    ├── index.njk                  Homepage
+    ├── about.njk
+    ├── alt-baking.njk             Project pages
+    ├── bear-car.njk
+    ├── boombox-suitcases.njk
+    ├── cabinet-desk.njk
+    ├── coffee-grinder.njk
+    ├── coffee-roasting.njk
+    ├── disco-dancefloor.njk
+    ├── sound-level-monitor.njk
+    ├── vegan-ice-cream.njk
+    ├── wedding-save-the-date.njk
+    ├── photo-booth.njk            WIP
+    ├── _includes/
+    │   ├── layouts/               Shared page shell
+    │   └── grid-script.njk        Justified grid builder
+    ├── _data/site.json            Site-wide data
+    ├── style.css                  All styles
+    ├── main.js                    All shared behavior
+    ├── fonts/                     Self-hosted Funnel Display fallback
+    ├── tiger-town-animated.svg    Full logo, animated pupils
+    ├── tiger-town-animated-mark.svg
+    ├── tiger-town-animated-stacked.svg
+    ├── tiger-town-mark-animated.svg
+    ├── favicon.svg                Mark only, static
+    ├── OG_image_1200x630.png
+    └── images/
+        ├── logo/                  (legacy GIF, no longer used)
+        ├── about/
+        ├── alt-baking/
+        ├── bear-car/
+        ├── boombox-suitcases/
+        ├── coffee-grinder/
+        ├── coffee-roasting/
+        ├── disco-dance-floor/
+        ├── felt-show/
+        └── ice-cream/
 ```
 
 ---
 
 ## Single Sources of Truth
 
+All paths under `src/`.
+
 | What | Where |
 |---|---|
-| Font | `// ── FONT ──` in main.js |
+| Font | `// ── FONT ──` in main.js, plus the `@font-face` at the top of style.css |
 | Logo file | `// ── LOGO ──` in main.js |
 | Project list / nav links | `// ── PROJECTS ──` in main.js |
 | Column gap | `--col-gap` in `:root` in style.css |
 | All other visual styles | style.css |
 | Logo animation | `<g id="white">` in tiger-town-animated.svg |
+| Page shell | `_includes/layouts/` |

@@ -19,7 +19,7 @@ The one flourish is the cursor, which leaves a mint paint trail across the page.
 | **Generator** | [Eleventy](https://www.11ty.dev) 3.x — Nunjucks templates, one `.njk` per project |
 | **Styles** | Plain CSS, tokens on `:root`. No preprocessor, no utility framework. |
 | **Scripts** | `main.js` — font injection and the paint-trail cursor. No dependencies. |
-| **Type** | Syne (Google Fonts), loaded from `main.js` rather than the HTML head |
+| **Type** | Funnel Display, injected from `main.js` rather than the HTML head, with a self-hosted fallback |
 | **Hosting** | Vercel — pushes to `main` deploy automatically |
 
 ## Layout
@@ -47,5 +47,5 @@ npm run build   # writes to _site/
 
 ## Credit
 
-Design and build by [Jen Murse](https://jenmurse.com). Syne is licensed under the SIL Open Font
-License. Project photography is Jen and Garth's own.
+Design and build by [Jen Murse](https://jenmurse.com). Funnel Display is licensed under the SIL Open
+Font License. Project photography is Jen and Garth's own.
