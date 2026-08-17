@@ -30,7 +30,7 @@ Tiger Town is Jen and Garth's personal creative lab. The site is a project portf
 
 **Font family:** Funnel Display (Google Fonts) — weights 400, 700, 800
 
-A geometric display sans with a slightly quirky, architectural quality. The site uses three weights: regular for body, bold for headings, and extrabold sparingly. It replaced Syne; one leftover `'Syne'` reference remains at `src/style.css:487` on the modal close button, which now falls back to `sans-serif`.
+A geometric display sans with a slightly quirky, architectural quality. The site uses three weights: regular for body, bold for headings, and extrabold sparingly. It replaced Syne, and as of 2026-08-17 no reference to Syne remains.
 
 A self-hosted copy in `src/fonts/` is declared as an `@font-face` at the top of style.css, so the site keeps its typeface if Google Fonts is unreachable.
 

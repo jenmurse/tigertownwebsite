@@ -20,9 +20,11 @@ Last updated: 2026-08-17
 `@font-face` block at the top of style.css along with the file in `src/fonts/`, and `font-family` in
 `html, body` in style.css.
 
-> **Known leftover:** `src/style.css:487` still names `'Syne'` on the modal close button, from before
-> the Funnel Display switch. That family is no longer loaded, so the button silently falls back to
-> `sans-serif`.
+**Three rules set their own `font-family` rather than inheriting it** — `.modal-close`,
+`.modal-caption` and `.modal-counter`. All three named `'Syne'` until 2026-08-17, so all three had
+been falling back to `sans-serif` since the switch; `.modal-caption` is the one that was visible.
+`.modal-close` genuinely needs its own declaration, because there is no global button reset and
+buttons do not inherit the family. Any new rule that names a family is a place this can break again.
 
 ## Colors
 
@@ -178,8 +180,7 @@ All paths are under `src/`.
 
 - [ ] Videos — embed YouTube/Vimeo or link out?
 - [ ] Image order per page — will be curated after layout is finalized
-- [x] Font — switched from Syne to Funnel Display. Done, with one leftover reference noted under
-  Typography above.
+- [x] Font — switched from Syne to Funnel Display. Done, and the last stray reference is gone.
 - [x] About page — `about.njk` exists.
 
 ---

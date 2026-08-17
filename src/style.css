@@ -484,7 +484,7 @@ html, body {
   cursor: pointer;
   padding: 8px;
   color: rgba(0,0,0,0.4);
-  font-family: 'Syne', sans-serif;
+  font-family: 'Funnel Display', sans-serif;
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -500,7 +500,7 @@ html, body {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'Syne', sans-serif;
+  font-family: 'Funnel Display', sans-serif;
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -688,7 +688,7 @@ html, body {
 
 /* ── MODAL CAPTION ── */
 .modal-caption {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Funnel Display', sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 0.02em;
