@@ -197,7 +197,6 @@ const PROJECTS = {
     { label: 'Boombox Suitcases',      href: 'boombox-suitcases.html' },
     { label: 'Coffee Grinder',         href: 'coffee-grinder.html' },
     { label: 'Disco Dance Floor',      href: 'disco-dancefloor.html' },
-    { label: 'Photo Booth',            href: 'photo-booth.html', wip: true },
     { label: 'Wedding Save the Date',  href: 'wedding-save-the-date.html' },
   ],
   kitchen: [
